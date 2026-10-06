@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fizyoterapi Anatomisi – Türkçe</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--accent:#2563eb;--line:#e5e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#101828;color:white;padding:28px 20px;position:sticky;top:0;z-index:10;box-shadow:0 3px 16px #0002}
+.wrap{max-width:1200px;margin:auto}.brand{font-size:25px;font-weight:800}.sub{color:#b8c0cc;margin-top:5px}
+.tabs,.subtabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tabs button,.subtabs button{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}.tabs button.active,.subtabs button.active{background:var(--accent);color:white;border-color:var(--accent)}
+main{padding:24px 20px}.hero{background:linear-gradient(135deg,#eaf2ff,#fff);border:1px solid #dbe5f5;border-radius:18px;padding:22px;margin-bottom:20px}
+h1{margin:0 0 6px;font-size:28px}h2{margin-top:26px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 5px 18px #1018280b}.card img{width:100%;height:210px;object-fit:contain;background:#f8fafc;display:block}.cardbody{padding:15px}.card h3{margin:0 0 6px}.latin{font-style:italic;color:#344054}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:12px;font-weight:800;margin-top:7px}.card button{margin-top:12px;width:100%;padding:10px;border:0;border-radius:10px;background:#172033;color:white;font-weight:700;cursor:pointer}
+.info{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:18px}.info table{width:100%;border-collapse:collapse}.info td{padding:9px;border-bottom:1px solid var(--line);vertical-align:top}.info td:first-child{font-weight:800;width:170px}
+.notice{font-size:13px;color:#667085;background:#fff;border:1px solid var(--line);padding:13px;border-radius:12px;margin-top:20px}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.open{display:flex}.modalbox{max-width:1000px;width:100%;max-height:92vh;overflow:auto;background:white;border-radius:18px;padding:18px}.modalbox img{width:100%;max-height:65vh;object-fit:contain;background:#f8fafc}.close{float:right;border:0;background:#eee;border-radius:9px;padding:8px 12px;cursor:pointer;font-weight:800}
+footer{padding:25px 20px;text-align:center;color:#667085}
+@media(max-width:600px){.card img{height:170px}h1{font-size:23px}.info td:first-child{width:120px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">🦴 Fizyoterapi Anatomisi</div><div class="sub">Hüfte · Knie · Schulter — Türkçe + Deutsch + Latince</div></div></header>
+<main class="wrap">
+<div class="hero">
+<h1>Türkçe Anatomi Öğrenme Sitesi</h1>
+<div class="muted">UZH Anatomie sitesinin Bewegungsapparat yapısından esinlenmiş, fizyoterapi öğrencileri için sadeleştirilmiş çalışma arayüzü.</div>
+</div>
+<div class="tabs" id="regionTabs"></div>
+<div class="subtabs" id="typeTabs"></div>
+<section id="content"></section>
+<div class="notice">Görseller UZH Anatomie sunucusundan doğrudan yüklenir. Görsel hakları UZH ve ilgili hak sahiplerine aittir. Kaynak: Universität Zürich – e-Learn Anatomie.</div>
+</main>
+<footer>Fizyoterapi Anatomisi · Eğitim amaçlı çalışma arayüzü</footer>
+
+<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="closeModal()">Kapat ✕</button><div id="modalContent"></div></div></div>
+
+<script>
+const BASE="https://e-learn.anatomy.uzh.ch/anatomie/Bewegungsapparat/bewapp_Bilder/";
+const data={
+huefte:{
+name:"Hüfte / Kalça",folder:"anathuefte",
+knochen:[
+["Kalça anatomisi – kemik görünümü","huefteGlehr01.jpg","Os coxae / Femur","Kalça kemiği ve femurun temel anatomik görünümü."],
+["Femur – kalça eklemi","huefteGlehr02.jpg","Femur / Caput femoris","Femur başı ve kalça eklemi ilişkisi."],
+["Kalça – ventral görünüm","huefteGatls01vent.jpg","Acetabulum / Femur","Önden görünüm; asetabulum ve femur ilişkisi."]
+],
+muskeln:[
+["Kalça kasları","huefteGlehr03.jpg","M. gluteus maximus, medius, minimus","Gluteal bölgenin temel kasları."],
+["Kalça kasları – derin tabaka","huefteGlehr04.jpg","M. piriformis, Mm. gemelli, M. obturatorius","Derin dış rotatorlar."],
+["Kalça kasları – medial görünüm","huefteGatls01med.jpg","M. iliopsoas ve komşu yapılar","Kalça fleksörleri ve komşu anatomik yapılar."]
+],
+baender:[
+["Kalça eklemi ve bağlar","huefteGlehr07.jpg","Lig. iliofemorale","Kalça ekleminin ön tarafındaki güçlü bağ kompleksi."],
+["Kalça eklemi – kapsül","huefteGlehr08.jpg","Capsula articularis","Eklem kapsülü ve çevre yapılar."],
+["Kalça bağları – görünüm","huefteGlehr09.jpg","Lig. pubofemorale / ischiofemorale","Kalça bağlarının temel yerleşimi."]
+],
+eklem:[
+["Articulatio coxae","huefteGlehr10.jpg","Articulatio coxae","Kalça eklemi: top-yuva tipi eklem."],
+["Kalça eklemi – hareket","huefteGlehr11.jpg","Flexion / Extension / Abduktion","Temel kalça hareketleri."],
+["Kalça eklemi – rotasyon","huefteGlehr12.jpg","Innenrotation / Außenrotation","İç ve dış rotasyon."]
+]},
+knie:{
+name:"Knie / Diz",folder:"anatknie",
+knochen:[
+["Diz – kemikler","KnieGlehr01.jpg","Femur · Tibia · Fibula · Patella","Dizin temel kemik yapıları."],
+["Patella","KnieGlehr02.jpg","Patella","Diz kapağının anatomik konumu."],
+["Tibia ve eklem yüzeyi","KnieGlehr03.jpg","Tibia / Tibiaplateau","Tibianın diz eklemine katılan bölümü."]
+],
+muskeln:[
+["Diz çevresi kasları","KnieGlehr04.jpg","M. quadriceps femoris","Diz ekstansiyonunun ana kas grubu."],
+["Hamstring grubu","KnieGlehr05.jpg","M. biceps femoris · M. semitendinosus · M. semimembranosus","Diz fleksörleri."],
+["Popliteal bölge","KnieGlehr06.jpg","M. popliteus","Diz arkasındaki küçük ama önemli kas."]
+],
+baender:[
+["Çapraz bağlar","KnieGlehr07.jpg","ACL / PCL","Lig. cruciatum anterius ve posterius."],
+["Yan bağlar","KnieGlehr08.jpg","MCL / LCL","Medial ve lateral kollateral bağlar."],
+["Patellar bağ","KnieGlehr09.jpg","Lig. patellae","Patellayı tibia ile bağlayan yapı."]
+],
+eklem:[
+["Diz eklemi","KnieGlehr10.jpg","Articulatio genus","Dizin genel eklem anatomisi."],
+["Menisküsler","KnieGlehr11.jpg","Meniscus medialis / lateralis","Medial ve lateral menisküsler."],
+["Diz hareketleri","KnieGlehr12.jpg","Flexion / Extension","Temel diz hareketleri."]
+]},
+schulter:{
+name:"Schulter / Omuz",folder:"anatschulter",
+knochen:[
+["Omuz kemikleri","schulterGlehr01.jpg","Scapula · Clavicula · Humerus","Omuz kuşağının temel kemikleri."],
+["Scapula","schulterGlehr02.jpg","Spina scapulae · Acromion · Cavitas glenoidalis","Kürek kemiğinin önemli noktaları."],
+["Humerus proksimali","schulterGlehr03.jpg","Caput humeri · Tuberculum majus/minus","Üst kol kemiğinin omuz eklemine katılan kısmı."]
+],
+muskeln:[
+["Rotatorenmanschette","schulterGlehr04.jpg","M. supraspinatus · infraspinatus · teres minor · subscapularis","Omuz stabilitesinde ana kas grubu."],
+["Deltoid kası","schulterGlehr05.jpg","M. deltoideus","Omuzun güçlü abdüktörü."],
+["Omuz kasları – derin görünüm","schulterGlehr06.jpg","M. teres major / minor","Omuz çevresindeki derin kaslar."]
+],
+baender:[
+["Omuz bağları","schulterGlehr07.jpg","Lig. glenohumerale","Glenohumeral bağ kompleksi."],
+["Coracoacromial bağ","schulterGlehr08.jpg","Lig. coracoacromiale","Acromion ile processus coracoideus arasındaki bağ."],
+["Coracohumeral bağ","schulterGlehr09.jpg","Lig. coracohumerale","Omuz eklemi kapsülünün üst tarafındaki bağ."]
+],
+eklem:[
+["Glenohumeral eklem","schulterGlehr10.jpg","Articulatio humeri","Omuzun ana top-yuva eklemi."],
+["Omuz hareketleri","schulterGlehr11.jpg","Flexion · Extension · Abduktion · Adduktion","Temel omuz hareketleri."],
+["Rotasyon","schulterGlehr12.jpg","Innenrotation · Außenrotation","Omuz iç ve dış rotasyonu."]
+]}
+};
+const typeNames={knochen:"🦴 Kemikler",muskeln:"💪 Kaslar",baender:"🔗 Bağlar",eklem:"⚙️ Eklem & Hareket"};
+let region="huefte", type="knochen";
+function renderTabs(){
+document.getElementById("regionTabs").innerHTML=Object.entries(data).map(([k,v])=>`<button class="${k===region?'active':''}" onclick="setRegion('${k}')">${v.name}</button>`).join("");
+document.getElementById("typeTabs").innerHTML=Object.entries(typeNames).map(([k,v])=>`<button class="${k===type?'active':''}" onclick="setType('${k}')">${v}</button>`).join("");
+}
+function render(){
+renderTabs();
+const d=data[region], arr=d[type];
+document.getElementById("content").innerHTML=`<h2>${d.name} — ${typeNames[type]}</h2>
+<div class="grid">${arr.map((x,i)=>`<article class="card">
+<img src="${BASE+d.folder+'/'+x[1]}" alt="${x[0]}" loading="lazy" onerror="this.style.opacity='.35'">
+<div class="cardbody"><h3>${x[0]}</h3><div class="latin">${x[2]}</div><div class="pill">Türkçe açıklama</div><p class="muted">${x[3]}</p><button onclick="show(${i})">🔎 Görseli ve bilgiyi aç</button></div>
+</article>`).join("")}</div>
+<div class="info"><h3>📌 Hızlı tekrar</h3><table><tr><td>Almanca</td><td>${d.name.split(" / ")[0]}</td></tr><tr><td>Türkçe</td><td>${d.name.split(" / ")[1]}</td></tr><tr><td>Çalışma sırası</td><td>Kemik → Eklem → Bağ → Kas → Hareket</td></tr></table></div>`;
+}
+function setRegion(x){region=x;render()} function setType(x){type=x;render()}
+function show(i){const x=data[region][type][i];document.getElementById("modalContent").innerHTML=`<h2>${x[0]}</h2><img src="${BASE+data[region].folder+'/'+x[1]}" alt="${x[0]}"><h3>${x[2]}</h3><p>${x[3]}</p><p class="muted">Kaynak görsel: UZH Anatomie / Universität Zürich.</p>`;document.getElementById("modal").classList.add("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+render();
+</script>
+</body></html>
